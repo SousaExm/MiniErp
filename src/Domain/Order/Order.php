@@ -11,13 +11,15 @@ class Order
   private Customer $owner;
   private string $status;
   private DateTimeImmutable $createdAt;
+  private float $amount;
 
-  public function __construct(Customer $owner, string $status, DateTimeImmutable $createdAt, string | null $uuid = null )
+  public function __construct(Customer $owner, string $status, DateTimeImmutable $createdAt, string | null $uuid = null, $amount = 0)
   {
     $this->owner = $owner;
     $this->status = $status; 
     $this->createdAt = $createdAt;
     $this->uuid = $uuid;
+    $this->amount = $amount;
   }
 
   public function generateUuid()
@@ -28,7 +30,7 @@ class Order
     $this->uuid = uniqid();  
   }
 
-	public function uuid(): string 
+	public function uuid(): string | null
   {
 		return $this->uuid;
 	}
@@ -46,5 +48,10 @@ class Order
   {
 		return $this->createdAt->format('d-m-Y');
 	}
+
+  public function amount(): float 
+  {
+    return $this->amount;
+  }
 }
 
