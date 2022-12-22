@@ -22,8 +22,9 @@ interface OrderRepository
    */
   public function ordersByCustomer(Customer $customer): array;
 
-  /**
-   * @return OrderWithProducts[]
-   */
-  public function ordersSortedBy(string $sorterdBy = null): array;
+  public function addOrdantionBy(string $column = null, string $direction): void;
+
+  public function setLimitOfResults(int $limit): void;
+
+  public function setOfsset(int $ofsset): void;
 }
