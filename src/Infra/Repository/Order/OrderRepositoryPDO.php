@@ -5,7 +5,7 @@ namespace MiniErp\Infra\Repository\Order;
 use MiniErp\Domain\Customer\Customer;
 use MiniErp\Domain\Order\Order;
 use MiniErp\Domain\Order\OrderWithProducts;
-use MiniErp\Domain\Repository\CustomerRepository;
+use MiniErp\Domain\Repository\Customer\CustomerRepository;
 use MiniErp\Domain\Repository\Order\OrderProductsRepository;
 use MiniErp\Domain\Repository\Order\OrderRepository;
 use PDO;
