@@ -1,8 +1,6 @@
 <?php
 
-namespace MiniErp\Domain;
-
-use MiniErp\Domain\Customer\Address;
+namespace MiniErp\Domain\Common;
 
 interface Addressable
 {

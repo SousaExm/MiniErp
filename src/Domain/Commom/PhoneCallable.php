@@ -2,7 +2,7 @@
 
 namespace MiniErp\Domain\Common;
 
-use MiniErp\Domain\Customer\Phone;
+use MiniErp\Domain\Common\Phone;
 
 interface PhoneCallable
 {
