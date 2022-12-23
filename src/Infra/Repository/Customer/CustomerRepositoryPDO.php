@@ -5,7 +5,7 @@ namespace MiniErp\Infra\Repository\Customer;
 use DateTimeImmutable;
 use MiniErp\Domain\Customer\Customer;
 use MiniErp\Domain\Repository\Common\AddressRepository;
-use MiniErp\Domain\Repository\Common\PhonesRepository;
+use MiniErp\Domain\Repository\Common\PhoneRepository;
 use MiniErp\Domain\Repository\Customer\CustomerRepository;
 use PDO;
 
@@ -14,9 +14,9 @@ class CustomerRepositoryPDO implements CustomerRepository
   private PDO $pdo;
   private AddressRepository $addressRepository;
 
-  private PhonesRepository $phonesRepository;
+  private PhoneRepository $phonesRepository;
 
-  public function __construct(PDO $pdo, AddressRepository $addressRepository, PhonesRepository $phonesRepository)
+  public function __construct(PDO $pdo, AddressRepository $addressRepository, PhoneRepository $phonesRepository)
   {
     $this->pdo = $pdo;
     $this->addressRepository = $addressRepository; 
@@ -143,7 +143,7 @@ class CustomerRepositoryPDO implements CustomerRepository
   private function update(Customer $customer): Customer
   {
     if($customer->uuid() === ''){
-      throw new \InvalidArgumentException('Para atualizar um usuário é necessário informar o seu ID');
+      throw new \InvalidArgumentException('Cliente com CPF já cadastrado, para atualiza-lo é necessário informar o seu ID');
     }
     $query = 'UPDATE customer
               SET name = :name, email = :email

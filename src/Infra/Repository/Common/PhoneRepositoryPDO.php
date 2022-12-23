@@ -3,11 +3,11 @@
 namespace MiniErp\Infra\Repository\Common;
 use MiniErp\Domain\Common\Phone;
 use MiniErp\Domain\Common\PhoneCallable;
-use MiniErp\Domain\Repository\Common\PhonesRepository;
+use MiniErp\Domain\Repository\Common\PhoneRepository;
 use PDO;
 use PDOStatement;
 
-class PhonesRepositoryPDO implements PhonesRepository
+class PhoneRepositoryPDO implements PhoneRepository
 {
 
   private PDO $pdo;

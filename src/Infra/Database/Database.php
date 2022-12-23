@@ -99,19 +99,6 @@ class Database
     $this->queryList[] = $query;
   }
 
-  // public function createSalesOrderTable()
-  // {
-  //   $query = 'CREATE TABLE IF NOT EXISTS productPerOrder (
-  //             id INT PRIMARY KEY AUTO_INCREMENT,
-  //             productId  VARCHAR(13) NOT NULL,  
-  //             orderId VARCHAR(13) NOT NULL,  
-  //             quantity FLOAT NOT NULL,
-  //             FOREIGN KEY (orderId) REFERENCES customerOrder(id), 
-  //             FOREIGN KEY (productId) REFERENCES product(id) 
-  //           )';
-
-  //   $this->queryList[] = $query;
-  // }
 
   public function createAllTables()
   {
@@ -121,7 +108,6 @@ class Database
     $this->createProductTable();
     $this->createCustomerOrderTable();
     $this->createProductPerOrderTable();
-    // $this->createSalesOrderTable();
   }
 
   public function execute()
@@ -130,6 +116,8 @@ class Database
     {
       $this->pdo->exec($query);
     }
+
+    $this->clearQuerys();
   }
 
   public function clearQuerys()
@@ -144,7 +132,7 @@ class Database
 
   public function dropAllTables()
   {
-    $query = 'DROP TABLE phone, address, productPerOrder, order, product, customer';
+    $query = 'DROP TABLE phone, address, productPerOrder, customerOrder, product, customer';
     $this->queryList[] = $query;
   }
 }
