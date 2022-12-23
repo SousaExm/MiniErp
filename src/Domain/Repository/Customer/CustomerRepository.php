@@ -1,6 +1,6 @@
 <?php
 
-namespace MiniErp\Domain\Repository;
+namespace MiniErp\Domain\Repository\Customer;
 use MiniErp\Domain\Customer\{
   Customer,
   Cpf

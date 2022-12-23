@@ -1,6 +1,6 @@
 <?php
 
-namespace MiniErp\Domain\Repository;
+namespace MiniErp\Domain\Repository\ommon;
 
 use MiniErp\Domain\Common\PhoneCallable;
 
