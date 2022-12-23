@@ -1,10 +1,10 @@
 <?php
 
-namespace MiniErp\Domain\Repository\ommon;
+namespace MiniErp\Domain\Repository\Common;
 
 use MiniErp\Domain\Common\PhoneCallable;
 
-interface PhonesRepository 
+interface PhoneRepository 
 {
   public function getPhonesFor(PhoneCallable $phoneCallableObj);
   public function save(PhoneCallable $phoneCallableObj): void;
