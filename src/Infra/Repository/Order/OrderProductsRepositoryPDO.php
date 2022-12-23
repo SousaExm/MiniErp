@@ -6,7 +6,7 @@ use MiniErp\Domain\Order\Order;
 use MiniErp\Domain\Order\OrderWithProducts;
 use MiniErp\Domain\Product\ProductWithQuantity;
 use MiniErp\Domain\Repository\Order\OrderProductsRepository;
-use MiniErp\Domain\Repository\ProductRepository;
+use MiniErp\Domain\Repository\Product\ProductRepository;
 use PDO;
 
 class OrderProductsRepositoryPDO implements OrderProductsRepository
