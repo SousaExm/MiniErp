@@ -14,7 +14,7 @@ class AddressTest extends TestCase
   {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage($errorMsg);
-    $address = new Address($street, $number, $neighborhood, $city, $state, $cep);
+    new Address($street, $number, $neighborhood, $city, $state, $cep);
   }
 
   /**
@@ -26,7 +26,7 @@ class AddressTest extends TestCase
   {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage($errorMsg);
-    $address = new Address($street, $number, $neighborhood, $city, $state, $cep);
+    new Address($street, $number, $neighborhood, $city, $state, $cep);
   }
 
   public function testCorrectlyAddress(){
