@@ -8,7 +8,7 @@ class AddressTest extends TestCase
   /**
    * @dataProvider returnsAddressWithEmptyParameters
    */
-  public function testWhenAnEmptyParameterPassedToARequiredParameterThrowsException(
+  public function testThrowsExceptionWhenAnEmptyParameterPassedToARequiredParameter(
      string $street, string $number, string $neighborhood, string $city, string $state, string $cep, string $errorMsg
   )
   {
@@ -20,7 +20,7 @@ class AddressTest extends TestCase
   /**
    * @dataProvider returnsAddressWithTooLongParameters
    */
-  public function testWhenAnTooLongParameterPassedThrowsException(
+  public function testThrowsExceptionWhenAnTooLongParameterPassed(
      string $street, string $number, string $neighborhood, string $city, string $state, string $cep, string $errorMsg
   )
   {
@@ -29,7 +29,7 @@ class AddressTest extends TestCase
     new Address($street, $number, $neighborhood, $city, $state, $cep);
   }
 
-  public function testCorrectlyAddress(){
+  public function testCorrectAddress(){
     $address = new Address('Rua Teste Teste', '123456', 'Meu Bairro', 'Minha Cidade', 'Meu Estado', '12345678');
     $this->assertEquals('Rua Teste Teste', $address->street());
     $this->assertEquals('123456', $address->number());
@@ -41,7 +41,6 @@ class AddressTest extends TestCase
 
 
   public function returnsAddressWithEmptyParameters(){
-    
     $withEmptyStreet = ['', '123', 'neighborhood','city', 'state', '01515151', 'O nome da rua nao pode ser vazio'];
     $withEmptyNumber = ['street', '', 'neighborhood','city', 'state', '01515151', 'O numero da rua nao pode ser vazio'];
     $withEmptyNeighborhood = ['street', '123', '','city', 'state', '01515151', 'O nome do bairro nao pode ser vazio'];
@@ -49,12 +48,12 @@ class AddressTest extends TestCase
     $withEmptyState = ['street', '123', 'neighborhood', 'City', '', '01515151', 'O nome do estado nao pode ser vazio'];
     $withEmptyCep = ['street', '123', 'neighborhood', 'City', 'state', '', 'O cep deve conter 8 caracteres'];
     return [
-      $withEmptyStreet,
-      $withEmptyNumber,
-      $withEmptyNeighborhood,
-      $withEmptyCity,
-      $withEmptyState,
-      $withEmptyCep
+      'Street' => $withEmptyStreet,
+      'Number' => $withEmptyNumber,
+      'Neighborhood' => $withEmptyNeighborhood,
+      'City' => $withEmptyCity,
+      'State' => $withEmptyState,
+      'Cep' => $withEmptyCep
     ];
   }
 
@@ -73,12 +72,12 @@ class AddressTest extends TestCase
     $tooLongCep = ['street', '123', 'neighborhood', 'City', 'state', '123456789', 'O cep deve conter 8 caracteres'];
     
     return [
-      $tooLongStreet,
-      $tooLongNumber,
-      $tooLongNeighborhood,
-      $tooLongCity,
-      $tooLongState,
-      $tooLongCep
+      'Street' => $tooLongStreet,
+      'Number' => $tooLongNumber,
+      'Neighborhood' => $tooLongNeighborhood,
+      'City' => $tooLongCity,
+      'State' => $tooLongState,
+      'Cep' => $tooLongCep
     ];
   }
 }

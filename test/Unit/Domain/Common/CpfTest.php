@@ -44,8 +44,8 @@ class CpfTest extends TestCase
   public function incorrectSizeProvider()
   {
     return [
-      ['450450450455', 'O CPF informado possuí tamanho inválido'],
-      ['4504504504', 'O CPF informado possuí tamanho inválido']
+      'Too Long' => ['450450450455', 'O CPF informado possuí tamanho inválido'],
+      'Too short' => ['4504504504', 'O CPF informado possuí tamanho inválido']
     ];
   }
 }
