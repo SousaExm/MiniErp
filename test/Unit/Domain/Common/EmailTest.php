@@ -9,7 +9,7 @@ class EmailTest extends TestCase
   /**
    * @dataProvider invalidEmailsProvider
    */
-  public function testeThrowsExceptionInvalidEmail($email, $message)
+  public function testThrowsExceptionInvalidEmail($email, $message)
   { 
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage($message);
@@ -23,7 +23,7 @@ class EmailTest extends TestCase
       'Without at symbol' => ['teste.teste.com', 'Por favor informe um e-mail válido'],
       'Without domain' => ['teste.teste@.com', 'Por favor informe um e-mail válido'],
       'Without username' => ['@teste.com', 'Por favor informe um e-mail válido'],
-      'too Long Email' => ['123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345@example.com', 'Por favor informe um e-mail válido']
+      'Too long email' => ['123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345@example.com', 'Por favor informe um e-mail válido']
     ];
   }
 }

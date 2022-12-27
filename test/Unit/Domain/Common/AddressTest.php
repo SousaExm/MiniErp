@@ -39,7 +39,6 @@ class AddressTest extends TestCase
     $this->assertEquals('12345678', $address->cep());
   }
 
-
   public function returnsAddressWithEmptyParameters(){
     $withEmptyStreet = ['', '123', 'neighborhood','city', 'state', '01515151', 'O nome da rua nao pode ser vazio'];
     $withEmptyNumber = ['street', '', 'neighborhood','city', 'state', '01515151', 'O numero da rua nao pode ser vazio'];
