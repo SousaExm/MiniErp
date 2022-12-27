@@ -7,22 +7,10 @@ use MiniErp\Domain\Customer\Customer;
 use MiniErp\Domain\Repository\Common\AddressRepository;
 use MiniErp\Domain\Repository\Common\PhoneRepository;
 
-interface CustomerRepository
-{
-  /**
-   * @return Customer[]
-   */
-  public function allCustomers(): array;
-  public function getCustomerByCpf(string $cpf): Customer | false;
-  public function getCustomerById(string $id): Customer | false;
-  public function remove(Customer $customer): void;
-  public function save(Customer $customer): Customer;
-};
-
 abstract class CustomerRepository 
 {
-  private PhoneRepository $phoneRepository;
-  private AddressRepository $addressRepository;
+  protected PhoneRepository $phoneRepository;
+  protected AddressRepository $addressRepository;
 
   /**
    * @return Customer[]
@@ -65,7 +53,7 @@ abstract class CustomerRepository
     $customerOwnerOfThisId = $this->findById($customer->uuid());
     $customerOwnerOfThisEmail = $this->findByEmail($customer->email);
 
-    if($customerOwnerOfThisId->cpf !== $customer->cpf){
+    if ($customerOwnerOfThisId->cpf !== $customer->cpf){
       throw new \DomainException('Nao é permitido alterar o CPF cadastrado');
     }
 
@@ -90,8 +78,14 @@ abstract class CustomerRepository
     $this->update($customer);
   }
 
-  public function remove(Customer $customer): void
+  public function remove(string $id): void
   {
+    $customer = $this->findById($id);
+
+    if($customer ===  null){
+      throw new \DomainException('Nenhum usuário localizado para o id informado');
+    }
+
     $this->phoneRepository->remove($customer);
     $this->addressRepository->remove($customer);
     $this->delete($customer);

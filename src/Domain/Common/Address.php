@@ -31,7 +31,7 @@ class Address
       throw new \InvalidArgumentException('O nome da rua nao pode ser vazio');
     }
     if(strlen($street) > 55){
-      throw new \InvalidArgumentException('O nome da rua nao possuir mais que 55 caracteres');
+      throw new \InvalidArgumentException('O nome da rua nao pode conter mais que 55 caracteres');
     }
 		$this->street = $street;
 	}
@@ -53,7 +53,7 @@ class Address
       throw new \InvalidArgumentException('O nome do bairro nao pode ser vazio');
     }
     if(strlen($neighborhood) > 55){
-      throw new \InvalidArgumentException('O nome do bairro nao possuir mais que 55 caracteres');
+      throw new \InvalidArgumentException('O nome do bairro nao pode conter mais que 55 caracteres');
     }
 		$this->neighborhood = $neighborhood;
 	}
@@ -64,7 +64,7 @@ class Address
       throw new \InvalidArgumentException('O nome da cidade nao pode ser vazio');
     }
     if(strlen($city) > 55){
-      throw new \InvalidArgumentException('O nome da cidade nao possuir mais que 55 caracteres');
+      throw new \InvalidArgumentException('O nome da cidade nao pode conter mais que 55 caracteres');
     } 
 		$this->city = $city;
 	}
@@ -75,7 +75,7 @@ class Address
       throw new \InvalidArgumentException('O nome do estado nao pode ser vazio');
     }
     if(strlen($state) > 20){
-      throw new \InvalidArgumentException('O nome do estado nao possuir mais que 20 caracteres');
+      throw new \InvalidArgumentException('O nome do estado nao pode conter mais que 20 caracteres');
     } 
 		$this->state = $state;
 	}
@@ -83,7 +83,7 @@ class Address
 	public function setCep(string $cep): void 
   {
     if(strlen($cep) != 8){
-      throw new \InvalidArgumentException('O cep deve possuir apenas 8 caracteres');
+      throw new \InvalidArgumentException('O cep deve conter 8 caracteres');
     }
 		$this->cep = $cep;
 	}

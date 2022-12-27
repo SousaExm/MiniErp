@@ -2,100 +2,58 @@
 
 namespace MiniErp\Domain\Customer;
 
+use CustomerName;
 use DateTimeImmutable;
 use MiniErp\Domain\Common\{
   Addressable,
   PhoneCallable,
   Cpf,
   Email,
-  Phone,
-  Address
+  Address,
+  PhonesList
 };
 
 
 class Customer implements Addressable, PhoneCallable
 {
   private $uuid;
-  private string $name;
+  private CustomerName $name;
   private Cpf $cpf;
   private Email $email;
   private DateTimeImmutable $birthDate;
   private Address | null $address = null;
-  private array $phones;
+  private CustomerPhonesList $phonesList;
 
   public function __construct(string $name, 
-                              string $cpf, 
-                              string $email, 
+                              Cpf $cpf, 
+                              Email $email, 
                               DateTimeImmutable $birthDate,
                               string | null $uuid = '')
   {
-    $this->uuid = $uuid;
-    $this->isValidName($name);
-    $this->cpf = new Cpf($cpf);
-    $this->email = new Email($email);
+
+    $this->name =  new CustomerName($name);
+    $this->cpf = $cpf;
+    $this->email = $email;
     $this->birthDate = $birthDate;
-    $this->phones = [];
+    $this->phonesList = new CustomerPhonesList();
+
+    if($uuid == ''){
+      $this->uuid = uniqid();
+    }
+
+    if(strlen($uuid) !== 13){
+      throw new \DomainException('O id do cliente informado é inválido');
+    }
   } 
 
-  private function isValidName(string $name)
-  {
-    $this->isEmpty($name);
-    $this->tooShortName($name);
-    $this->isOnlyOneName($name);
-    $this->name = $name;
-  }
-
-  private function isEmpty(string $name){
-    $name = str_replace(' ', '', $name);
-    $isEmpty = strlen($name) == 0;
-    
-    if($isEmpty){
-      throw new \InvalidArgumentException();
-    }
-  }
-
-  private function tooShortName(string $name){
-    
-    $isNametooShort = strlen($name) < 3;
-    if($isNametooShort){
-      throw new \InvalidArgumentException();
-    }
-  }
-
-  private function isOnlyOneName(string $name){
-    $nameArray = explode(' ', $name);
-    $isOnlyOneName = count($nameArray) < 1;
-
-    if($isOnlyOneName){
-      throw new \InvalidArgumentException();
-    }
-  }
-
-  public function addPhone(string $areaCode, string $phoneNumber, bool $hasWhatsApp)
-  {
-    if(count($this->phones) >= 2){
-      throw new \DomainException('Permitido no máximo 2 telefones por pessoa');
-    }
-
-    $this->phones[] = new Phone($areaCode, $phoneNumber, $hasWhatsApp);
-  }
-
   public function addAddress(string $street, 
-                            string $number, 
-                            string $neighborhood, 
-                            string $city, 
-                            string $state, 
-                            string $cep)
+                             string $number, 
+                             string $neighborhood, 
+                             string $city, 
+                             string $state, 
+                             string $cep)
   {
     $this->address = new Address($street, $number, $neighborhood, $city, $state, $cep);
-  }
-
-  public function generateUuid()
-  {
-    if($this->uuid !== ''){
-      throw new \DomainException('Voce só pode definir o ID uma única vez');
-    }
-    $this->uuid = uniqid();
   }
 
   public function uuid(): string
@@ -120,16 +78,12 @@ class Customer implements Addressable, PhoneCallable
   
   public function birthDate(): string
   {
-    return $this->birthDate->format('d-m-Y');
+    return $this->birthDate->format('Y-m-d');
   }
 
-  /**
-   *
-   * @return Phone[]
-   */
-  public function phones(): array
+  public function phonesList(): PhonesList
   {
-    return $this->phones;
+    return $this->phonesList;
   }
 
   public function address(): ?Address
