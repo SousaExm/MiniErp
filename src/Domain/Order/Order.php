@@ -11,6 +11,7 @@ class Order
   private Customer $owner;
   private string $status;
   private DateTimeImmutable $createdAt;
+  public OrderProductsList $productsList;
   private float $amount;
 
   public function __construct(Customer $owner, string $status, DateTimeImmutable $createdAt, string | null $uuid = null, $amount = 0)
@@ -46,7 +47,7 @@ class Order
 	
 	public function createdAt(): string 
   {
-		return $this->createdAt->format('d-m-Y');
+		return $this->createdAt->format('Y-m-d');
 	}
 
   public function amount(): float 
