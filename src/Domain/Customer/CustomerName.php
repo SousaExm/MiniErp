@@ -1,5 +1,7 @@
 <?php
 
+namespace MiniErp\Domain\Customer;
+
 class CustomerName
 {
   private string $name;
@@ -11,8 +13,9 @@ class CustomerName
   private function isValidName(string $name)
   {
     $this->isEmpty($name);
-    $this->tooShortName($name);
     $this->isOnlyOneName($name);
+    $this->tooShortName($name);
+    $this->tooLongName($name);
     $this->name = $name;
   }
 
@@ -27,15 +30,23 @@ class CustomerName
 
   private function tooShortName(string $name){
     
-    $isNametooShort = strlen($name) < 3;
+    $isNametooShort = strlen($name) < 8;
     if($isNametooShort){
-      throw new \InvalidArgumentException();
+      throw new \DomainException('O nome completo nao pode conter menos que 8 caracteres');
+    }
+  }
+
+  private function tooLongName(string $name){
+    
+    $isNametooShort = strlen($name) > 55;
+    if($isNametooShort){
+      throw new \DomainException('O nome completo nao pode conter mais que 55 caracteres');
     }
   }
 
   private function isOnlyOneName(string $name){
     $nameArray = explode(' ', $name);
-    $isOnlyOneName = count($nameArray) < 1;
+    $isOnlyOneName = count($nameArray) <= 1;
 
     if($isOnlyOneName){
       throw new \DomainException('É necessário informar no mínimo nome e sobrenome para o cliente');

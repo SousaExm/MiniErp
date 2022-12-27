@@ -13,13 +13,14 @@ class CustomerPhonesList implements PhonesList
   public function __construct()
   {
     $this->phones = [];
+    $this->lastRemovedPhones = [];
   }
 
   public function addPhone(Phone $phone): void
   {
     $this->maxPhones();
 
-    if(!$this->phoneExistsIn(...$this->phones, $phone)){
+    if($this->phoneExistsIn($phone->number(), ...$this->phones) !== false){
       throw new \DomainException('Nao é possível adicionar dois telefones com o mesmo número');
     }
 
@@ -28,14 +29,22 @@ class CustomerPhonesList implements PhonesList
 
   public function removePhone(string $phone): void
   {
-    $phoneKey = $this->phoneExistsIn(...$this->phones, $phone);
+    $phoneKey = $this->phoneExistsIn($phone, ...$this->phones);
 
-    if($phoneKey){
-      throw new \DomainException('Nao foi encontrado telefone correspondente ao número informado.');
+    if($phoneKey === false && $phoneKey !== 0){
+      throw new \DomainException('Nao foi encontrado telefone correspondente ao número informado');
     }
 
-    $this->lastRemovedPhones[] = $phone;
-    unset($this->phones, $phoneKey);
+    $this->lastRemovedPhones[] = $this->phones[$phoneKey];
+  
+    unset($this->phones[$phoneKey]);
+    
+    if(!isset($this->phones)){
+      $this->phones = [];
+      return;
+    }
+    
+    $this->phones = array_values($this->phones);
   }
 
   public function updatePhone(string $oldPhone, Phone $newPhone): void
@@ -46,18 +55,18 @@ class CustomerPhonesList implements PhonesList
 
   private function maxPhones()
   {
-    if(count($this->phones) > $this->maxPhones){
+    if(count($this->phones) >= $this->maxPhones){
       throw new \DomainException('Nao é possível possuir mais de dois telefones por cliente');
     }
   }
 
-  private function phoneExistsIn(Phone ...$phonesList, $needle): bool | int
+  private function phoneExistsIn($needle, Phone ...$phonesList,): bool | int
   {
     foreach($phonesList as $key => $phoneInList)
     {
       if($phoneInList->number() == $needle){
         return $key;
-      };
+      }
     }
     return false;
   }

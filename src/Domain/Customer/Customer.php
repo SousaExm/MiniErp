@@ -2,7 +2,7 @@
 
 namespace MiniErp\Domain\Customer;
 
-use CustomerName;
+use MiniErp\Domain\Customer\CustomerName;
 use DateTimeImmutable;
 use MiniErp\Domain\Common\{
   Addressable,
@@ -12,7 +12,6 @@ use MiniErp\Domain\Common\{
   Address,
   PhonesList
 };
-
 
 class Customer implements Addressable, PhoneCallable
 {
@@ -28,7 +27,7 @@ class Customer implements Addressable, PhoneCallable
                               Cpf $cpf, 
                               Email $email, 
                               DateTimeImmutable $birthDate,
-                              string | null $uuid = '')
+                              string $uuid = '')
   {
 
     $this->name =  new CustomerName($name);
@@ -36,24 +35,20 @@ class Customer implements Addressable, PhoneCallable
     $this->email = $email;
     $this->birthDate = $birthDate;
     $this->phonesList = new CustomerPhonesList();
+    $this->uuid = $uuid;
 
     if($uuid == ''){
       $this->uuid = uniqid();
     }
 
-    if(strlen($uuid) !== 13){
+    if(strlen($this->uuid) !== 13){
       throw new \DomainException('O id do cliente informado é inválido');
     }
   } 
 
-  public function addAddress(string $street, 
-                             string $number, 
-                             string $neighborhood, 
-                             string $city, 
-                             string $state, 
-                             string $cep)
+  public function addAddress(Address $address)
   {
-    $this->address = new Address($street, $number, $neighborhood, $city, $state, $cep);
+    $this->address = $address;
   }
 
   public function uuid(): string
