@@ -6,13 +6,13 @@ use DateTimeImmutable;
 
 class Order
 {
-  private string $uuid;
+  private string | null $uuid;
   private string $customerId;
   private string $status;
   private DateTimeImmutable $createdAt;
   private OrderProductsList $productsList;
 
-  public function __construct(string $customerId, string $status, DateTimeImmutable $createdAt, string | null $uuid = null, OrderProductsList $productsList)
+  public function __construct(string $customerId, string $status, DateTimeImmutable $createdAt, OrderProductsList $productsList, string | null $uuid = null)
   {
     $this->uuid = $uuid;
     $this->customerId = $customerId;
@@ -28,8 +28,8 @@ class Order
       $this->uuid = uniqid();
     }
 
-    if(strlen($this->uuid) < 13){
-      new \DomainException('O id do pedido informado é inválido');
+    if(strlen($this->uuid) !== 13){
+     throw new \DomainException('O id do pedido informado é inválido');
     }
   }
 

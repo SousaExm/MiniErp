@@ -8,12 +8,13 @@ class OrderProduct
 {
   private string $productId;
   private float $quantity;
-  private float $price;
+  private float | null $price;
 
   public function __construct(string $productId, float $quantity)
   {
     $this->productId = $productId;
     $this->updateQuantity($quantity);
+    $this->price = null;
   }
 
   public function updateQuantity(float $quantity)
@@ -49,6 +50,9 @@ class OrderProduct
 
   public function totalPrice(): float
   {
+    if($this->price == null){
+      throw new DomainException('Nao é possível calcular o total de um produto ou pedido sem definir sem definir o preço dos itens.');
+    }
     return $this->quantity * $this->price;
   }
 
