@@ -13,8 +13,8 @@ class CustomerPhonesListTest extends TestCase
   {
     [$phonesList, $phone1] = $data;
     
-    $phonesList->addPhone($phone1);
-    $this->assertContains($phone1, $phonesList->phones());
+    $phonesList->addPhone(...$phone1);
+    $this->assertContainsEquals(new Phone(...$phone1), $phonesList->phones());
     $this->assertContainsOnly(Phone::class, $phonesList->phones());
   }
 
@@ -28,8 +28,8 @@ class CustomerPhonesListTest extends TestCase
     $this->expectException(\DomainException::class);
     $this->expectExceptionMessage('Nao é possível adicionar dois telefones com o mesmo número');
     
-    $phonesList->addPhone($phone1);
-    $phonesList->addPhone($phone1);
+    $phonesList->addPhone(...$phone1);
+    $phonesList->addPhone(...$phone1);
   }
 
   /**
@@ -42,9 +42,9 @@ class CustomerPhonesListTest extends TestCase
     $this->expectException(\DomainException::class);
     $this->expectExceptionMessage('Nao é possível possuir mais de dois telefones por cliente');
 
-    $phonesList->addPhone($phone1);
-    $phonesList->addPhone($phone2);
-    $phonesList->addPhone($phone3);
+    $phonesList->addPhone(...$phone1);
+    $phonesList->addPhone(...$phone2);
+    $phonesList->addPhone(...$phone3);
   }
 
   /**
@@ -57,7 +57,7 @@ class CustomerPhonesListTest extends TestCase
     $this->expectException(\DomainException::class);
     $this->expectExceptionMessage('Nao foi encontrado telefone correspondente ao número informado');
 
-    $phonesList->removePhone($phone1->number());
+    $phonesList->removePhone($phone1['phoneNumber']);
   }
 
   /**
@@ -67,12 +67,12 @@ class CustomerPhonesListTest extends TestCase
   {
     [$phonesList, $phone1] = $data;
 
-    $phonesList->addPhone($phone1);
-    $phonesList->removePhone($phone1->number());
+    $phonesList->addPhone(...$phone1);
+    $phonesList->removePhone($phone1['phoneNumber']);
     
-    $this->assertNotContains($phone1, $phonesList->phones());
+    $this->assertNotContains(new Phone(...$phone1), $phonesList->phones());
     $this->assertCount(0, $phonesList->phones());
-    $this->assertContains($phone1, $phonesList->lastRemovedPhones());
+    $this->assertContainsEquals(new Phone(...$phone1), $phonesList->lastRemovedPhones());
     $this->assertCount(1, $phonesList->lastRemovedPhones());
   }
 
@@ -83,25 +83,25 @@ class CustomerPhonesListTest extends TestCase
   {
     [$phonesList, $phone1, $phone2, $phone3, $phone4] = $data;
 
-    $phonesList->addPhone($phone1);
-    $phonesList->addPhone($phone2);
+    $phonesList->addPhone(...$phone1);
+    $phonesList->addPhone(...$phone2);
 
-    $phonesList->removePhone($phone1->number());
-    $phonesList->removePhone($phone2->number());
+    $phonesList->removePhone($phone1['phoneNumber']);
+    $phonesList->removePhone($phone2['phoneNumber']);
 
-    $phonesList->addPhone($phone3);
-    $phonesList->addPhone($phone4);
+    $phonesList->addPhone(...$phone3);
+    $phonesList->addPhone(...$phone4);
 
-    $phonesList->removePhone($phone3->number());
-    $phonesList->removePhone($phone4->number());
+    $phonesList->removePhone($phone3['phoneNumber']);
+    $phonesList->removePhone($phone4['phoneNumber']);
     
     $this->assertCount(0, $phonesList->phones());
     $this->assertCount(4, $phonesList->lastRemovedPhones());
 
-    $this->assertContains($phone1, $phonesList->lastRemovedPhones());
-    $this->assertContains($phone2, $phonesList->lastRemovedPhones());
-    $this->assertContains($phone3, $phonesList->lastRemovedPhones());
-    $this->assertContains($phone4, $phonesList->lastRemovedPhones());
+    $this->assertContainsEquals(new Phone(...$phone1), $phonesList->lastRemovedPhones());
+    $this->assertContainsEquals(new Phone(...$phone2), $phonesList->lastRemovedPhones());
+    $this->assertContainsEquals(new Phone(...$phone3), $phonesList->lastRemovedPhones());
+    $this->assertContainsEquals(new Phone(...$phone4), $phonesList->lastRemovedPhones());
   }
 
   /**
@@ -111,23 +111,23 @@ class CustomerPhonesListTest extends TestCase
   {
     [$phonesList, $phone1, $phone2] = $data;
 
-    $phonesList->addPhone($phone1);
-    $phonesList->updatePhone($phone1->number(), $phone2);
+    $phonesList->addPhone(...$phone1);
+    $phonesList->updatePhone($phone1['phoneNumber'], ...$phone2);
 
-    $this->assertContains($phone2, $phonesList->phones());
-    $this->assertContains($phone1, $phonesList->lastRemovedPhones());
+    $this->assertContainsEquals(new Phone(...$phone2), $phonesList->phones());
+    $this->assertContainsEquals(new Phone(...$phone1), $phonesList->lastRemovedPhones());
 
-    $this->assertNotContains($phone1, $phonesList->phones());
-    $this->assertNotContains($phone2, $phonesList->lastRemovedPhones());
+    $this->assertNotContains(new Phone(...$phone1), $phonesList->phones());
+    $this->assertNotContains(new Phone(...$phone2), $phonesList->lastRemovedPhones());
   }
 
   public function phonesProvider()
   {
     $phonesList = new CustomerPhonesList();
-    $phone1 = new Phone('011', '999998989', true);
-    $phone2 = new Phone('011', '999998981', true);
-    $phone3 = new Phone('011', '999998985', true);
-    $phone4 = new Phone('011', '999998981', true);
+    $phone1 = array('areaCode' => '011', 'phoneNumber' => '999998989', 'hasWhatsApp' => true);
+    $phone2 = array('areaCode' => '011', 'phoneNumber' => '999998981', 'hasWhatsApp' => true);
+    $phone3 = array('areaCode' => '011', 'phoneNumber' => '999998985', 'hasWhatsApp' => true);
+    $phone4 = array('areaCode' => '011', 'phoneNumber' => '999998981', 'hasWhatsApp' => true);
 
     $data = [$phonesList, $phone1, $phone2, $phone3, $phone4];
 
