@@ -4,11 +4,11 @@ namespace MiniErp\Domain\Common;
 
 interface PhonesList
 {
-  public function addPhone(Phone $phone): void;
+  public function addPhone(string $areaCode, string $phoneNumber, bool $hasWhatsApp): void;
 
   public function removePhone(string $phone): void;
 
-  public function updatePhone(string $oldPhone, Phone $newPhone): void;
+  public function updatePhone(string $oldPhone, string $areaCode, string $phoneNumber, bool $hasWhatsApp): void;
 
   /**
    * @return Phone[]

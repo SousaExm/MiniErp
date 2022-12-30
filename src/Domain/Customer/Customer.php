@@ -24,15 +24,14 @@ class Customer implements Addressable, PhoneCallable
   private CustomerPhonesList $phonesList;
 
   public function __construct(string $name, 
-                              Cpf $cpf, 
-                              Email $email, 
+                              string $cpf, 
+                              string $email, 
                               DateTimeImmutable $birthDate,
                               string $uuid = '')
   {
-
     $this->name =  new CustomerName($name);
-    $this->cpf = $cpf;
-    $this->email = $email;
+    $this->cpf = new Cpf($cpf);
+    $this->email = new Email($email);
     $this->birthDate = $birthDate;
     $this->phonesList = new CustomerPhonesList();
     $this->uuid = $uuid;
@@ -46,9 +45,14 @@ class Customer implements Addressable, PhoneCallable
     }
   } 
 
-  public function addAddress(Address $address)
+  public function addAddress(string $street, 
+                            string $number, 
+                            string $neighborhood, 
+                            string $city, 
+                            string $state, 
+                            string $cep)
   {
-    $this->address = $address;
+    $this->address = new Address($street, $number, $neighborhood, $city, $state, $cep);
   }
 
   public function uuid(): string

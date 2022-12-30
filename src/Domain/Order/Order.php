@@ -3,32 +3,34 @@
 namespace MiniErp\Domain\Order;
 
 use DateTimeImmutable;
-use MiniErp\Domain\Customer\Customer;
 
 class Order
 {
   private string $uuid;
-  private Customer $owner;
+  private string $customerId;
   private string $status;
   private DateTimeImmutable $createdAt;
-  public OrderProductsList $productsList;
-  private float $amount;
+  private OrderProductsList $productsList;
 
-  public function __construct(Customer $owner, string $status, DateTimeImmutable $createdAt, string | null $uuid = null, $amount = 0)
+  public function __construct(string $customerId, string $status, DateTimeImmutable $createdAt, string | null $uuid = null, OrderProductsList $productsList)
   {
-    $this->owner = $owner;
+    $this->uuid = $uuid;
+    $this->customerId = $customerId;
     $this->status = $status; 
     $this->createdAt = $createdAt;
-    $this->uuid = $uuid;
-    $this->amount = $amount;
+    $this->productsList = $productsList;
+    $this->validateUuid();
   }
 
-  public function generateUuid()
+  private function validateUuid()
   {
-    if($this->uuid !== null){
-      throw new \DomainException('Voce só pode definir o ID uma única vez');
+    if($this->uuid === null){
+      $this->uuid = uniqid();
     }
-    $this->uuid = uniqid();  
+
+    if(strlen($this->uuid) < 13){
+      new \DomainException('O id do pedido informado é inválido');
+    }
   }
 
 	public function uuid(): string | null
@@ -36,9 +38,9 @@ class Order
 		return $this->uuid;
 	}
 
-	public function owner(): Customer 
+	public function customerId(): string 
   {
-		return $this->owner;
+		return $this->customerId;
 	}
 	
 	public function status(): string {
@@ -52,7 +54,12 @@ class Order
 
   public function amount(): float 
   {
-    return $this->amount;
+    return $this->productsList->totalAmount();
+  }
+
+  public function productsList(): OrderProductsList
+  {
+    return $this->productsList;
   }
 }
 

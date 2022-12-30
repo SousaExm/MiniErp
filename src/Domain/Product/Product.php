@@ -18,20 +18,40 @@ class Product
     $this->validateDescription($description);
     $this->validateAmount($amount);
     $this->validateUnitMeasurement($unitMeasurement);
+    $this->validateUuid();
     $this->isActive = $isActive;
   }
 
+  private function validateUuid()
+  {
+    if($this->uuid === null){
+      $this->uuid = uniqid();
+    }
+
+    if(strlen($this->uuid) !== 13){
+      throw new \DomainException('O id do produto é inválido.');
+    }
+  }
   private function validateName(string $name)
   {
-    $this->isEmpty($name);
-    $this->minAndMaxLength($name, 3, 55);
+    if(strlen($name) < 3){
+      throw new \InvalidArgumentException('O nome do produto deve conter no mínimo 3 caracteres');
+    }
+    if(strlen($name) > 55){
+      throw new \InvalidArgumentException('O nome do produto deve conter no máximo 55 caracteres');
+    }
     $this->name = $name;
   }
 
   private function validateDescription($description)
   {
-    $this->isEmpty($description);
-    $this->minAndMaxLength($description, 55, 255);
+    if(strlen($description) < 55){
+      throw new \InvalidArgumentException('A descricao do produto deve conter no mínimo 55 caracteres');
+    }
+    if(strlen($description) > 255){
+      throw new \InvalidArgumentException('A descricao do produto deve conter no máximo 255 caracteres');
+    }
+
     $this->description = $description;
   }
 
@@ -45,38 +65,11 @@ class Product
 
   private function validateUnitMeasurement($unit)
   {
-    $this->isEmpty($unit);
-    $this->minAndMaxLength($unit, 2, 2);
+    if(strlen($unit) > 4 || strlen($unit) == 0){
+      throw new \InvalidArgumentException('Unidade de medida inválida');
+    }
+
     $this->unitMeasurement = $unit;
-  }
-
-  private function isEmpty(string $text){
-    $name = str_replace(' ', '', $text);
-    $isEmpty = strlen($name) == 0;
-    
-    if($isEmpty){
-      throw new \InvalidArgumentException('Os campos nao podem ser vazios');
-    }
-  }
-
-  private function minAndMaxLength(string $text, int $minChar, int $maxChar){
-    $isTextTooLong = strlen($text) > $minChar;
-    $isTextTooShort = strlen($text) < $maxChar;
-    if($isTextTooShort){
-      throw new \InvalidArgumentException("$text é muito curto para o campo informado");
-    }
-
-    if($isTextTooLong){
-      throw new \InvalidArgumentException("$text é muito curto para o campo informado");
-    }
-  }
-
-  public function generateUuid()
-  {
-    if($this->uuid !== null){
-      throw new \DomainException('Voce só pode definir o ID uma única vez');
-    }
-    $this->uuid = uniqid();  
   }
 
 	public function uuid(): string {

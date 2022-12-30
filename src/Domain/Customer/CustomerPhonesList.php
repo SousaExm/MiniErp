@@ -16,10 +16,10 @@ class CustomerPhonesList implements PhonesList
     $this->lastRemovedPhones = [];
   }
 
-  public function addPhone(Phone $phone): void
+  public function addPhone(string $areaCode, string $phoneNumber, bool $hasWhatsApp): void
   {
+    $phone = new Phone($areaCode, $phoneNumber, $hasWhatsApp);
     $this->maxPhones();
-
     if($this->phoneExistsIn($phone->number(), ...$this->phones) !== false){
       throw new \DomainException('Nao é possível adicionar dois telefones com o mesmo número');
     }
@@ -47,10 +47,10 @@ class CustomerPhonesList implements PhonesList
     $this->phones = array_values($this->phones);
   }
 
-  public function updatePhone(string $oldPhone, Phone $newPhone): void
+  public function updatePhone(string $oldPhone,string $areaCode, string $phoneNumber, bool $hasWhatsApp): void
   {
     $this->removePhone($oldPhone);
-    $this->addPhone($newPhone);
+    $this->addPhone($areaCode, $phoneNumber, $hasWhatsApp);
   }
 
   private function maxPhones()
